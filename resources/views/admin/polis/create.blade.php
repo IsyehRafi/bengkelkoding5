@@ -1,6 +1,27 @@
-<x-layouts.app title="Tambah Poli">
-    <!-- Content -->
-    <div class="content">
+@extends('components.layouts.app')
+
+@section('content')
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Tambah Poli Baru</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('polis.index') }}">Manajemen Poli</a></li>
+                        <li class="breadcrumb-item active">Tambah Poli</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -10,6 +31,7 @@
                                 <i class="fas fa-plus"></i> Tambah Poli Baru
                             </h3>
                         </div>
+
                         <form action="{{ route('polis.store') }}" method="POST">
                             @csrf
                             <div class="card-body">
@@ -25,6 +47,7 @@
                                             @enderror
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="keterangan" class="form-label">Keterangan <span class="text-danger">*</span></label>
@@ -38,6 +61,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-save"></i> Simpan
@@ -51,5 +75,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</x-layouts.app>
+    </section>
+</div>
+@endsection
