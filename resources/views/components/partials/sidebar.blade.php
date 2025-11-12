@@ -14,56 +14,69 @@
                 <i class="fas fa-user-circle" style="font-size: 2rem; color: #fff;"></i>
             </div>
             <div class="info">
-                <a href="#" class="d-block">Admin</a>
+                 <a href="#" class="d-block">{{ auth()->user()->nama }}</a>
             </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Dashboard -->
-                <li class="nav-item">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard Admin</p>
-                    </a>
-                </li>
-
-                <!-- Manajemen Poli -->
-                <li class="nav-item">
-                    <a href="{{ route('polis.index') }}" class="nav-link {{ request()->routeIs('polis.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-hospital"></i>
-                        <p>Manajemen Poli</p>
-                    </a>
-                </li>
-
-                <!-- Manajemen Dokter -->
-                <li class="nav-item">
-                    <a href="{{ route('dokter.index') }}" class="nav-link {{ request()->routeIs('dokter.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-hospital"></i>
-                        <p>Manajemen Dokter</p>
-                    </a>
-                </li>
-
-                <!-- Manajemen Pasien -->
-                <li class="nav-item">
-                    <a href="{{ route('pasien.index') }}" class="nav-link {{ request()->routeIs('pasien.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-user-injured"></i>
-                        <p>Manajemen Pasien</p>
-                    </a>
-                </li>
-
-                <!-- Manajemen Obat -->
-                <li class="nav-item">
-                    <a href="{{ route('obat.index') }}" class="nav-link {{ request()->routeIs('obat.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-pills"></i>
-                        <p>Manajemen Obat</p>
-                    </a>
-                </li>
-
-                <!-- Divider -->
-                <li class="nav-header">MENU LAINNYA</li>
-
+                @if(auth()->check() && auth()->user()->hasRole('admin'))
+                    <!-- Dashboard Admin -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Dashboard Admin</p>
+                        </a>
+                    </li>
+                    <!-- Manajemen Poli -->
+                    <li class="nav-item">
+                        <a href="{{ route('polis.index') }}" class="nav-link {{ request()->routeIs('polis.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-hospital"></i>
+                            <p>Manajemen Poli</p>
+                        </a>
+                    </li>
+                    <!-- Manajemen Dokter -->
+                    <li class="nav-item">
+                        <a href="{{ route('dokter.index') }}" class="nav-link {{ request()->routeIs('dokter.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-md"></i>
+                            <p>Manajemen Dokter</p>
+                        </a>
+                    </li>
+                    <!-- Manajemen Pasien -->
+                    <li class="nav-item">
+                        <a href="{{ route('pasien.index') }}" class="nav-link {{ request()->routeIs('pasien.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-injured"></i>
+                            <p>Manajemen Pasien</p>
+                        </a>
+                    </li>
+                    <!-- Manajemen Obat -->
+                    <li class="nav-item">
+                        <a href="{{ route('obat.index') }}" class="nav-link {{ request()->routeIs('obat.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-pills"></i>
+                            <p>Manajemen Obat</p>
+                        </a>
+                    </li>
+                    <li class="nav-header">MENU LAINNYA</li>
+                @elseif(auth()->check() && auth()->user()->hasRole('dokter'))
+                    <!-- Dashboard Dokter -->
+                    <li class="nav-item">
+                        <a href="{{ route('dokter.dashboard') }}" class="nav-link {{ request()->routeIs('dokter.dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Dashboard Dokter</p>
+                        </a>
+                    </li>
+                    <li class="nav-header">MENU LAINNYA</li>
+                @elseif(auth()->check() && auth()->user()->hasRole('pasien'))
+                    <!-- Dashboard Pasien -->
+                    <li class="nav-item">
+                        <a href="{{ route('pasien.dashboard') }}" class="nav-link {{ request()->routeIs('pasien.dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Dashboard Pasien</p>
+                        </a>
+                    </li>
+                    <li class="nav-header">MENU LAINNYA</li>
+                @endif
                 <!-- Logout -->
                 <li class="nav-item">
                     <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

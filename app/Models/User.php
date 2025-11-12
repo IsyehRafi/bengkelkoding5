@@ -61,4 +61,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(JadwalPeriksa::class, '');
     }
+    /**
+     * Cek apakah user memiliki role tertentu
+     */
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
 }
