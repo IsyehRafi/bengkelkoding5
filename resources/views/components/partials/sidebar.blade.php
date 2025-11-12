@@ -57,7 +57,7 @@
                             <p>Manajemen Obat</p>
                         </a>
                     </li>
-                    <li class="nav-header">MENU LAINNYA</li>
+                    
                 @elseif(auth()->check() && auth()->user()->hasRole('dokter'))
                     <!-- Dashboard Dokter -->
                     <li class="nav-item">
@@ -66,7 +66,14 @@
                             <p>Dashboard Dokter</p>
                         </a>
                     </li>
-                    <li class="nav-header">MENU LAINNYA</li>
+                    <!-- Jadwal Periksa Dokter -->
+<li class="nav-item">
+    <a href="{{ route('jadwal-periksa.index') }}" class="nav-link {{ request()->routeIs('jadwal-periksa.*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-calendar-alt"></i>
+        <p>Jadwal Periksa</p>
+    </a>
+</li>
+
                 @elseif(auth()->check() && auth()->user()->hasRole('pasien'))
                     <!-- Dashboard Pasien -->
                     <li class="nav-item">
@@ -75,7 +82,14 @@
                             <p>Dashboard Pasien</p>
                         </a>
                     </li>
-                    <li class="nav-header">MENU LAINNYA</li>
+                  <!-- Daftar Poli Pasien -->
+    <li class="nav-item">
+        <a href="{{ route('pasien.daftar.index') }}" class="nav-link {{ request()->routeIs('pasien.daftar.index') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-hospital"></i>
+            <p>Daftar Poli</p>
+        </a>
+    </li>
+                    
                 @endif
                 <!-- Logout -->
                 <li class="nav-item">

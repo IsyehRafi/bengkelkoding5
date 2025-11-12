@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,6 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
-
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -27,38 +27,55 @@ class AuthController extends Controller
                 return redirect()->route('pasien.dashboard');
             }
         }
-        return back()->withErrors(['email' => 'Email atau password salah.']);
-    }
-    public function showRegister()
-    {
-        return view('auth.register');
+        return back()->withErrors(['email' => 'Email atau Password Salah!']);
     }
     public function register(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:' . User::class,
-            'password' => 'required|string|min:6|confirmed',
-            'alamat' => 'required|string|max:255',
-            'no_hp' => 'required|numeric',
-            'no_ktp' => 'required|numeric',
+            'nama' => ['required', 'string', 'max:225'],
+            'alamat' => ['required', 'string', 'max:225'],
+            'no_ktp' => ['required', 'string', 'max:225'],
+            'no_hp' => ['required', 'string', 'max:225'],
+            'email' => ['required', 'string', 'email', 'max:225', 'unique:users,email'],
+            'password' => ['required', 'confirmed'],
         ]);
+
+        // Generate Nomor Rekam Medis otomatis dengan format: YYYYMM-XXXX
+        $yearMonth = date('Ym'); 
+
+        $countThisMonth = User::where('role', 'pasien')
+            ->where('no_rm', 'LIKE', $yearMonth . '-%')
+            ->count();
+
+        $sequential = str_pad($countThisMonth + 1, 4, '0', STR_PAD_LEFT);
+        $no_rm = $yearMonth . '-' . $sequential;
 
         User::create([
             'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'no_ktp' => $request->no_ktp,
+            'no_hp' => $request->no_hp,
+            'no_rm' => $no_rm,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'alamat' => $request->alamat,
-            'no_hp' => $request->no_hp,
-            'no_ktp' => $request->no_ktp,
-            'role' => 'pasien',
+            'role' => 'pasien'
         ]);
         return redirect()->route('login');
     }
 
-    public function logout()
+    public function showRegister()
+    {
+        return view(view: 'auth.register');
+    }
+
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
-        return redirect()->route('login');
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }
